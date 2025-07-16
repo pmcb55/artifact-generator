@@ -826,7 +826,7 @@ describe("Artifact Generator unit tests", () => {
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
 
-      expect(() => artifactGenerator.runPublish("local")).toThrowError(
+      expect(() => artifactGenerator.runPublish("local")).toThrow(
         "exec-command-guaranteed-to-fail-on-any-operating-system",
       );
 

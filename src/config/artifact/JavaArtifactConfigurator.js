@@ -95,7 +95,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
     for (let i = 0; i < packagingTools.length; i += 1) {
       if (packagingTools[i] === "maven") {
         // The following line requires an await in loop to enable user input
-        this.packagingConfig.push(await JavaArtifactConfigurator.promptMaven()); // eslint-disable-line no-await-in-loop
+        this.packagingConfig.push(await JavaArtifactConfigurator.promptMaven());
       } else {
         // The values used in this function are selected through an inquirer process,
         // so this case should not happen in a normal usage.
@@ -126,14 +126,12 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
     };
     mavenConfig.packagingTemplates = [packagingTemplate];
     // The following lines require an await in loop to enable user input
-    // eslint-disable-next-line no-await-in-loop
     while ((await inquirer.prompt(ADD_REPOSITORY_CONFIRMATION)).addRepository) {
       // The repository attribute is added to the configuration object only if needed
       if (!mavenConfig.repository) {
         mavenConfig.repository = [];
       }
       mavenConfig.repository.push({
-        // eslint-disable-next-line no-await-in-loop
         ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT)),
       });
     }
