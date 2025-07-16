@@ -179,7 +179,7 @@ class ConfigFileGenerator {
       const generator = ConfigFileGenerator.buildConfigGenerator(languages[i]);
       // All generators should extend the ArtifactConfig class,
       // and therefore implement the 'prompt()' method.
-      artifacts.push(await generator.prompt()); // eslint-disable-line no-await-in-loop
+      artifacts.push(await generator.prompt());
     }
 
     return artifacts;
@@ -198,8 +198,8 @@ class ConfigFileGenerator {
       // the user is asked a series of questions (e.g. input resources or prefix),
       // and then he/she is asked whether more vocabularies should be added to the
       // config file or not.
-      vocabularies.push(await VocabularyConfigurator.prompt()); // eslint-disable-line no-await-in-loop
-      addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION); // eslint-disable-line no-await-in-loop
+      vocabularies.push(await VocabularyConfigurator.prompt());
+      addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION);
     }
 
     return vocabularies;

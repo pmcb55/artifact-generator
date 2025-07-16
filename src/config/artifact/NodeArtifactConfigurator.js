@@ -74,7 +74,7 @@ class NodeArtifactConfigurator extends ArtifactConfigurator {
     for (let i = 0; i < packagingTools.length; i += 1) {
       if (packagingTools[i] === "NPM") {
         // The following line requires an await in loop to enable user input
-        this.packagingConfig.push(await NodeArtifactConfigurator.promptNpm()); // eslint-disable-line no-await-in-loop
+        this.packagingConfig.push(await NodeArtifactConfigurator.promptNpm());
       } else {
         // The values used in this function are selected through an inquirer process,
         // so this case should not happen in a normal usage.
