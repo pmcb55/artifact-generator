@@ -1,11 +1,8 @@
-# Deprecation warning
-This project is deprecated. It will no longer receive any updates, including security patches, so we recommend to stop using it as a dependency (or to use it at your own risk).
-
 # Artifact Generator
 
 This tool automatically generates deployable artifacts for various programming
-languages (e.g., npm Node.js modules for JavaScript, JARs for Java, assemblies
-for C#, etc.). These artifacts contain source-code files defining
+languages (e.g., npm Node.js modules for JavaScript or TypeScript, JARs for Java,
+assemblies for C#, etc.). These artifacts contain source-code files defining
 programming-language constants for the terms (e.g., the Classes, Properties,
 and Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
 Streams, Solid vocabularies, or your own custom vocabularies).
@@ -25,7 +22,7 @@ vocabulary metadata.
 To install the Artifact Generator you will need `npm` (although it can also
 be run via `npx`).
 
-We highly recommend the use of Node.js Version Manager (nvm) to manage multiple
+We recommend the use of Node.js Version Manager (nvm) to manage multiple
 versions of `npm`, and also to set up your npm permissions properly. To install
 nvm, follow the instructions
 [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-node-js-and-npm).
@@ -75,7 +72,7 @@ you can do so by running:
 npm -g install @inrupt/artifact-generator
 ```
 
-Ensure the installation completed successfully:
+Check that the installation completed successfully:
 ```shell
 artifact-generator --help
 ```
