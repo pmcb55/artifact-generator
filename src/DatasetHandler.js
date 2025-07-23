@@ -200,7 +200,7 @@ module.exports = class DatasetHandler {
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!).
     //  We also need to handle leading characters that are digits (e.g., the
-    //  Auto Core vocab here:
+    // Auto Core vocab here:
     //    https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/
     //  ...has terms like '0to100KMH' and '0to60MPH').
     // The FAIR vocabulary uses dots/full-stops '.' to name some of its
@@ -210,8 +210,9 @@ module.exports = class DatasetHandler {
     const firstCharacter = name.charAt(0);
     const nameEscapedForLanguage = (
       firstCharacter >= "0" && firstCharacter <= "9" ? `_${name}` : name
-    ).replace(/[-\/.]/g, "_");
-    // const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
+    )
+      .replace(/[-\/.]/g, "_")
+      .replace(/^name$/, "name_"); // From the FOAF vocab (when generated as a static member of a TypeScript vocab Class).
 
     // TODO: Currently these alterations are required only for Java-specific
     //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the

@@ -16,6 +16,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   extremely slow (e.g. 2025-07-23 with w3id.org, or FOAF occasionally!).
 - Use correct cached filename when reading locally cached vocabs with multiple
   inputs.
+- Add 'name' as a vocab term that requires suffixing (with an underscore), as
+  FOAF.name causes a TypeScript name clash when defined as a member of a Class
+  in generated code.
 
 ## 4.0.0 2024-03-12
 
