@@ -1311,7 +1311,7 @@ describe("Dataset Handler", () => {
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
-        storeLocalCopyOfVocabDirectory: testLocalCopyDirectory,
+        localCopyAsTurtleDirectory: testLocalCopyDirectory,
       });
 
       await handler.buildTemplateInput();

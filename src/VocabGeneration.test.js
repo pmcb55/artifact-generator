@@ -20,7 +20,7 @@ const SUPPORT_BUNDLING = true;
 // const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
 const PUBLISH_TO_REPO_LIST = ["npmLocal"];
 const LOCAL_COPY_OF_VOCAB_DIRECTORY =
-  "./test/Generated/LOCAL_COPY_OF_VOCAB_AS_TURTLE/";
+  "./test/Generated/LOCAL_COPY_OF_VOCABS_AS_TURTLE/";
 
 const ConfigAll = {
   _: "generate",
@@ -33,7 +33,7 @@ const ConfigAll = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -47,7 +47,7 @@ const ConfigCommonRdf = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -66,7 +66,7 @@ const ConfigCommonRdfNoExtensions = {
   // because it's not the most comprehensive test, don't bother testing the
   // publication process for the generated artifacts.
   // publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -80,7 +80,7 @@ const ConfigInruptAll = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -95,7 +95,7 @@ const ConfigInruptCore = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   // publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -110,7 +110,7 @@ const ConfigInruptGlossary = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -124,7 +124,7 @@ const ConfigInruptUi = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -139,7 +139,7 @@ const ConfigInruptService = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -153,7 +153,7 @@ const ConfigSolid = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
 
@@ -216,7 +216,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // runNpmInstall: RUN_NPM_INSTALL,
       // supportBundling: SUPPORT_BUNDLING,
       // publish: [DEFAULT_PUBLISH_KEY],
-      // storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+      // localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
     });
   }, 10000);
 
@@ -541,7 +541,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       runNpmInstall: RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,
       // publish: [DEFAULT_PUBLISH_KEY],
-      storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+      localCopyAsTurtleDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
       reportBestPracticeCompliance: true,
     });
   }, 30000);

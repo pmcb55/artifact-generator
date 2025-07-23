@@ -10,6 +10,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### New features
 
+- Expose the ability to store local Turtle copies of processed vocabs via the
+  command line (we've had the option for ages internally, just not exposed as
+  a command-line option). Extremely useful when some vocabs offline or
+  extremely slow (e.g. 2025-07-23 with w3id.org, or FOAF occasionally!).
+- Use correct cached filename when reading locally cached vocabs with multiple
+  inputs.
+
 ## 4.0.0 2024-03-12
 
 - Breaking changes (no longer throws an exception if YAML artifact has no
@@ -68,13 +75,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Encoded clear distinction between the Vocabulary/Ontology IRI and the
   namespace IRI.
 - **BREAKING CHANGE** Renamed the configuration parameter of 'namespaceOverride'
-  to be 'namespaceIriOverride', to better align with the new 
+  to be 'namespaceIriOverride', to better align with the new
   'vocabularyIriOverride' parameter, and also to distinguish it more clearly
   from other namespace details (such as the namespace prefix).
 - **BREAKING CHANGE** Renamed the configuration parameter of 'description' to be
   consistent with internal code use of 'descriptionFallback' (which better
   communicates its intent as a fallback in case the vocab itself does not
-  explicitly provide its own description). 
+  explicitly provide its own description).
 - **BREAKING CHANGE** Changed Inrupt Artifact Generator vocab namespace IRI to
   use a trailing slash instead of a trailing hash.
 - Ignore Verdaccio 'npm unpublish' errors on retry now (useful for local
@@ -106,18 +113,18 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Fix slash encoding for Java (detected by QUDT comments).
 - Typo and tweaks to Skydiving example Turtle.
 - Include DCELEMENTS.title (RDF and RDFS) and RDFS.label (QUDT) as allowable
-  predicates for vocabulary descriptions. 
+  predicates for vocabulary descriptions.
 - Throws now if no vocab description found, or specified in config.
 - Cleaned up use of vocab namespace IRI override - if one is specified, it's
   used, full stop (previous behaviour was a confused mixture of trying to
   support both the detected namespace IRI and the override).
-- Convert the slash '/' character in vocab term names to underscore '_' in
+- Convert the slash '/' character in vocab term names to underscore '\_' in
   generated source-code constant names (example thrown up by the BIBO ontology
   that defines terms named 'degrees/phd' and 'degrees/ma').
 - Added SKOS:definition to allowable vocab description predicates (Gist uses
   it).
 - Prefix terms with leading digits (like '0To60Mph' from the Auto vocab) with
-  underscores, so that they are legal programming language variable names. 
+  underscores, so that they are legal programming language variable names.
 
 ## 1.0.4 2021-10-01
 
@@ -152,9 +159,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## 1.0.1 2021-08-20
 
-- Note: there was a mistaken v1.1.0 release here in the Git history 
+- Note: there was a mistaken v1.1.0 release here in the Git history
   (commit: adefc1bae0e3e5b006ed32853d130e3d5a2abf65), but we caught this and
-  cleaned it up before any release to npm. 
+  cleaned it up before any release to npm.
 - Term description metadata now always displayed for all terms (regardless of
   it being non-English or not), and more detailed descriptions provided too
   (and all with full test coverage).
@@ -188,7 +195,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   deprecated now).
 - Local instance names prefixed with underscore in vocab templates to
   try and prevent potential name clashes with vocab terms.
-- Bump version CLI option removed.  
+- Bump version CLI option removed.
 
 ## 0.15.0 2021-07-30
 
@@ -196,11 +203,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Added local vocabulary (PetRock.ttl) to example vocab list. Useful for testing
   watcher detecting changes in YAML file (i.e., just run from the repo root and
   edit that vocab to see real-time re-generation:
-    `node index.js watch --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml`
+  `node index.js watch --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml`
   ...or run this multiple times to see re-generation ignored after first time,
   but then edit YAML file and re-run to see re-generation again (due to the
   generator detecting the config file change):
-    `node index.js generate --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml --noPrompt`
+  `node index.js generate --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml --noPrompt`
 - Add artifactName to required properties in YAML validation
 - Add ES module support to generated JavaScript artifacts:
   - Adds sideEffects: false to package templates
@@ -219,7 +226,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## 0.14.0 2021-07-27
 
 - Add option 'vocabContentTypeHeaderOverride' as a HTTP Content Type header
-  override, as (some vocab servers (e.g., Resume-RDF 
+  override, as (some vocab servers (e.g., Resume-RDF
   "http://rdfs.org/resume-rdf/cv.rdfs#")) return a content type of 'text/plain'
   even though the response is XML/RDF. This value allows us override the
   server header so that we can use the correct parser.
@@ -246,13 +253,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   for an example, defining 'rdf:Resource', 'dcterms:conformsTo', etc.))).
 - Split the README for individual artifacts from the README for the overall
   generation operation (which now lists all individual artifact generated).
-- If configured (using 'storeLocalCopyOfVocabDirectory' option) we can store all
+- If configured (using 'localCopyAsTurtleDirectory' option) we can store all
   vocabs read as Turtle in local files. Convenient for seeing vocabs locally,
   some of which may be in less-readable serializations (like RDFa, or RDF/XML).
   Also provides a basis for still generating artifacts even if offline and
   remote vocabs are not available, as we can use cached copies instead
   (although of course these could be out-of-date in relation to the 'live'
-  vocab!). 
+  vocab!).
 - Add description of term translations for labels and comments (if any).
 - Add option (`vocabAcceptHeaderOverride`) to override the HTTP Accept header
   sent when requesting vocabs as some vocabs (such as https://w3id.org/survey-ontology#)
@@ -274,7 +281,6 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Use the vocabulary description from the YAML configuration file as a fallback
   description if the vocabulary itself doesn't provide a description that we
   can detect.
-  
 - Re-instate the generation of the RDF vocabulary (it was temporarily removed
   due to name clashes).
 

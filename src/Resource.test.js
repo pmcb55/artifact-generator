@@ -291,7 +291,7 @@ describe("Touching a file", () => {
         const rootCause = "some reason...";
         expect(() =>
           Resource.attemptToReadGeneratedResource(
-            { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+            { localCopyAsTurtleDirectory: testLocalCopyDirectory },
             "inputResource doesn't matter",
             rootCause,
           ),
@@ -310,7 +310,7 @@ describe("Touching a file", () => {
         const rootCause = "some reason...";
         expect(() =>
           Resource.attemptToReadGeneratedResource(
-            { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+            { localCopyAsTurtleDirectory: testLocalCopyDirectory },
             "https://does-not-exist.com/",
             rootCause,
           ),
@@ -327,7 +327,7 @@ describe("Touching a file", () => {
         );
 
         const dataset = await Resource.attemptToReadGeneratedResource(
-          { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+          { localCopyAsTurtleDirectory: testLocalCopyDirectory },
           "http://rdf-extension.com#",
           "some reason...",
         );
@@ -344,7 +344,7 @@ describe("Touching a file", () => {
         );
 
         const dataset = await Resource.attemptToReadGeneratedResource(
-          { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+          { localCopyAsTurtleDirectory: testLocalCopyDirectory },
           "http://rdf-extension.com#.ttl",
           "some reason...",
         );
