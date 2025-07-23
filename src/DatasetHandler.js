@@ -800,12 +800,12 @@ module.exports = class DatasetHandler {
     result.supportBundling = this.vocabData.supportBundling;
     result.supportBundling = this.vocabData.supportBundling;
 
-    if (this.vocabData.storeLocalCopyOfVocabDirectory) {
-      result.storeLocalCopyOfVocabDirectory =
-        this.vocabData.storeLocalCopyOfVocabDirectory;
+    if (this.vocabData.localCopyAsTurtleDirectory) {
+      result.localCopyAsTurtleDirectory =
+        this.vocabData.localCopyAsTurtleDirectory;
 
       await Resource.storeLocalCopyOfResource(
-        result.storeLocalCopyOfVocabDirectory,
+        result.localCopyAsTurtleDirectory,
         result.vocabName,
         result.namespaceIri,
         this.fullDataset,

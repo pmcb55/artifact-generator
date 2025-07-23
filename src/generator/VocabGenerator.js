@@ -118,9 +118,9 @@ module.exports = class VocabGenerator {
         ? ` and term selection input [${this.vocabData.termSelectionResource}]`
         : "";
 
-      const result = `Failed to generate from input [${
-        this.vocabData.inputResources
-      }]${termSelection}: [${
+      const result = `Failed to generate from input [${this.vocabData.inputResources.join(
+        ", ",
+      )}]${termSelection}: [${
         error.message
       }].\n\nStack: ${error.stack.toString()}`;
       throw new Error(result);

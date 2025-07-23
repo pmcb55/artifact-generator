@@ -105,10 +105,17 @@ module.exports = class Resource {
 
   async processInputs(config) {
     const datasets = [];
+    let termsSelectionDataset;
 
-    for (let i = 0; i < this.inputResources.length; i++) {
-      const inputResource = this.inputResources[i];
-      try {
+    // We can have multiple input resources, but if any of them fail to load
+    // (including the term selection resource, if any), then our catch handler
+    // will lookup our local cache directory (if we were given one) for an
+    // 'end-result' cached file, named (in part) with the overall vocab
+    // namespace IRI (as opposed to the alternative approach of attempting to
+    // cache each individual input resource).
+    try {
+      for (let i = 0; i < this.inputResources.length; i++) {
+        const inputResource = this.inputResources[i];
         const resource = await Resource.readResourceViaCache(
           inputResource,
           this.vocabAcceptHeaderOverride,
@@ -117,55 +124,44 @@ module.exports = class Resource {
         );
 
         datasets.push(resource);
-      } catch (rootCause) {
-        datasets.push(
-          await Resource.attemptToReadGeneratedResource(
-            config,
-            inputResource,
-            rootCause,
-          ),
-        );
       }
-    }
 
-    let termsSelectionDataset;
-    if (this.termSelectionResource) {
-      termsSelectionDataset = await Resource.readResourceViaCache(
-        this.termSelectionResource,
+      if (this.termSelectionResource) {
+        termsSelectionDataset = await Resource.readResourceViaCache(
+          this.termSelectionResource,
+        );
+
+        // We also add the terms from this resource to our collection of input
+        // datasets, since we expect it to contain possible extensions (e.g.,
+        // translations of labels or comments into new languages, or possibly
+        // completely new terms).
+        datasets.push(termsSelectionDataset);
+      }
+    } catch (rootCause) {
+      // Empty our dataset array in case we did manage to read 'some' of the
+      // inputs - as we're now going to attempt to read the 'final result'
+      // directly from our cache instead.
+      datasets.length = 0;
+
+      datasets.push(
+        await Resource.attemptToReadGeneratedResource(
+          config,
+          // Either we were given the vocablary IRI explicitly as an override,
+          // or we assume the very first input resource refers to the correct
+          // vocabulary IRI (since in most cases we expect just a single input
+          // resource named as the vocab's namespace IRI - but we can easily
+          // override that when necessary).
+          config.vocabularyIriOverride || config.inputResources[0],
+          rootCause,
+        ),
       );
-
-      // We also add the terms from this resource to our collection of input
-      // datasets, since we expect it to contain possible extensions (e.g.,
-      // translations of labels or comments into new languages, or possibly
-      // completely new terms).
-      datasets.push(termsSelectionDataset);
     }
 
     return { datasets, termsSelectionDataset };
   }
 
-  // WIP - commenting out for now...
-  // async readResourceUsingLocalCache(config, inputResource) {
-  //   let resource;
-  //   try {
-  //     resource = await this.readResource(
-  //       inputResource,
-  //       this.vocabAcceptHeaderOverride,
-  //       this.vocabContentTypeHeaderFallback
-  //     );
-  //
-  //     if (inputResource.startsWith("http") && config.storeLocalCopyOfVocabDirectory) {
-  //       Resource.storeLocalCopyOfResource(config.storeLocalCopyOfVocabDirectory, resource);
-  //     }
-  //   } catch (error) {
-  //     resource = attemptToReadGeneratedResource(config, inputResource, error);
-  //   }
-  //
-  //   return resource;
-  // }
-
   static attemptToReadGeneratedResource(config, inputResource, rootCause) {
-    const cacheDirectory = config.storeLocalCopyOfVocabDirectory;
+    const cacheDirectory = config.localCopyAsTurtleDirectory;
     if (cacheDirectory === undefined) {
       throw new Error(
         `No local cached vocab directory to fallback to when processing resource [${inputResource}] - root cause of failure: [${rootCause}]`,
@@ -228,6 +224,7 @@ module.exports = class Resource {
       vocabContentTypeHeaderOverride,
       vocabContentTypeHeaderFallback,
     );
+
     debug(
       `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size.toLocaleString()}] triples)`,
     );
@@ -312,7 +309,7 @@ module.exports = class Resource {
           }
 
           debug(
-            `About to process fetched input resource [${inputResource}] as a dataset...`,
+            `Attempting to process fetched input resource [${inputResource}] as content type [${rdfResponse.headers.get("content-type")}] as a dataset...`,
           );
           return rdfResponse.dataset();
         })
@@ -368,15 +365,16 @@ module.exports = class Resource {
    * now), or generation process will (probably) fail somehow!).
    *
    * The format of the locally save filename is as follows:
-   *   <Vocab prefix>-<Timestamp of generation>-<Digest of vocab>__<Encoded vocab namespace>.ttl
    *
-   *   - <Vocab prefix> - to make the filename easily readable. Prefixes *should*
+   *   `<Vocab prefix>-<Timestamp of generation>-<Digest of vocab>__<Encoded vocab namespace>.ttl`
+   *
+   *   - `<Vocab prefix>` - to make the filename easily readable. Prefixes *should*
    *     be unique to vocabs.
-   *   - <Digest of vocab> - a digest to ensure we only store new, changed,
+   *   - `<Digest of vocab>` - a digest to ensure we only store new, changed,
    *     versions of a vocabulary.
-   *   - <Timestamp of generation> - the date and time the local file was
+   *   - `<Timestamp of generation>` - the date and time the local file was
    *     generated.
-   *   - <Encoded vocab namespace> - the full namespace of the vocabulary
+   *   - `<Encoded vocab namespace>` - the full namespace of the vocabulary
    *     (encoded to replace invalid filename characters).
    *   - .ttl - files are stored as Turtle (for human readability).
    *
@@ -445,7 +443,7 @@ module.exports = class Resource {
       if (files.length === 0) {
         const outputFilename = path.join(
           directory,
-          `${vocabName}-${moment().format()}-${vocabDigest}__${namespaceFilename}`,
+          `${vocabName}-${moment().format()}-Digest-${vocabDigest}__${namespaceFilename}`,
         );
 
         // File errors will just propagate back up. (We should add specific

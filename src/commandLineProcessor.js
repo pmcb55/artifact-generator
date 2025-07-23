@@ -261,6 +261,17 @@ function processCommandLine(exitOnFail, commandLineArgs) {
           " generated artifacts (defaults to the current directory).",
       )
       .default("outputDirectory", ".")
+
+      .alias("lc", "localCopyAsTurtleDirectory")
+      .describe(
+        "localCopyAsTurtleDirectory",
+        "Local cache directory for Turtle copies of vocabs (defaults inside the './Generated' directory, but we'd expect you to specify a directory that won't be deleted, but that also won't be committed to source control (so that each developers copy is 'local' to just them))).",
+      )
+      .default(
+        "localCopyAsTurtleDirectory",
+        "./Generated/LOCAL_COPY_OF_VOCABS_AS_TURTLE",
+      )
+
       .check(validateCommandLine)
       .parse(commandLineArgs)
   );
