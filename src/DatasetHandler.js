@@ -212,7 +212,8 @@ module.exports = class DatasetHandler {
       firstCharacter >= "0" && firstCharacter <= "9" ? `_${name}` : name
     )
       .replace(/[-\/.]/g, "_")
-      .replace(/^name$/, "name_"); // From the FOAF vocab (when generated as a static member of a TypeScript vocab Class).
+      .replace(/^name$/, "name_") // From the FOAF vocab (when generated as a static member of a TypeScript vocab Class).
+      .replace(/^length$/, "length_"); // Error in TypeScript - it's a static member of a TypeScript 'Function').
 
     // TODO: Currently these alterations are required only for Java-specific
     //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
