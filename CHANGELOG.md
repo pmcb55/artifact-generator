@@ -19,6 +19,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Add 'name' as a vocab term that requires suffixing (with an underscore), as
   FOAF.name causes a TypeScript name clash when defined as a member of a Class
   in generated code.
+- Add 'length' as a vocab term that requires suffixing (it's a method in
+  TypeScript 'Function').
 
 ## 4.0.0 2024-03-12
 
