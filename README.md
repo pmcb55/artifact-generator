@@ -1,11 +1,16 @@
 # Artifact Generator
 
-This tool automatically generates deployable artifacts for various programming
-languages (e.g., npm Node.js modules for JavaScript or TypeScript, JARs for Java,
-assemblies for C#, etc.). These artifacts contain source-code files defining
-programming-language constants for the terms (e.g., the Classes, Properties,
-and Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
-Streams, Solid vocabularies, or your own custom vocabularies).
+Generates source-code to greatly ease the use the terms defined in shared
+RDF vocabularies, by providing a constant for each term.
+
+Each constant not only provides that term's IRI, but also provides accesors for
+all the term's metadata too (e.g., it's labels and comments (potentially in many
+languages), 'see also' and 'is defined by' references, etc.).
+
+Code generated from mutiple vocabularies can easily be bundled and deployed as a
+single artifact in any programming language (e.g., npm Node.js modules for JavaScript
+or TypeScript, JARs for Java, assemblies for C#, etc.), which can then be be imported
+by developers directly into their projects.
 
 ## Quick start demo
 
