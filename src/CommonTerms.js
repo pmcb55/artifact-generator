@@ -55,6 +55,7 @@ module.exports.DCELEMENTS = {
 const SKOS_NAMESPACE = "http://www.w3.org/2004/02/skos/core#";
 module.exports.SKOS = {
   Concept: rdf.namedNode(`${SKOS_NAMESPACE}Concept`),
+  prefLabel: rdf.namedNode(`${SKOS_NAMESPACE}prefLabel`),
   definition: rdf.namedNode(`${SKOS_NAMESPACE}definition`),
 };
 

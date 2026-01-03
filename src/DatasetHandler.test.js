@@ -642,16 +642,16 @@ describe("Dataset Handler", () => {
       expect(description).toContain("languages [NoLocale, en, fr, ga]");
     });
 
-    it("should treat 'skosxl:literalForm' as labels in all languages", async () => {
+    it("should treat 'skosxl:literalForm' and 'skos:prefLabel' as labels in all languages", async () => {
       const dataset = rdf
         .dataset()
         .addAll(vocabMetadata)
         .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
         .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, SKOSXL.Label))
         .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInIrish))
-        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOS.prefLabel, labelInFrench))
         .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInEnglish))
-        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelNoLocale));
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOS.prefLabel, labelNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
