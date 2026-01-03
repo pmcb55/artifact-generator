@@ -11,11 +11,11 @@ const {
   OWL_NAMESPACE,
   XSD,
   SHACL,
+  SKOS,
   SKOSXL,
   VANN,
   DCELEMENTS,
   DCTERMS,
-  SKOS,
   ARTIFACT_GENERATOR,
 } = require("./CommonTerms");
 
@@ -255,6 +255,12 @@ module.exports = class DatasetHandler {
 
     this.fullDataset
       .match(quad.subject, RDFS.label, null)
+      .forEach((subQuad) => {
+        DatasetHandler.add(labels, subQuad);
+      });
+
+    this.fullDataset
+      .match(quad.subject, SKOS.prefLabel, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
