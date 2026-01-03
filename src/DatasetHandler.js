@@ -1319,9 +1319,13 @@ module.exports = class DatasetHandler {
   }
 
   static subjectsOnly(dataset) {
-    const terms = dataset.filter((quad) => {
-      return quad.subject.value !== OWL.Ontology.value;
-    });
+    const terms = dataset;
+    // TODO: PMcB55: I can't remember the logic behind this, but a clear
+    // consequence/bug is that the Class 'OWL.Ontology' will be filtered out
+    // from the output for the OWL vocab itself!
+    // .filter((quad) => {
+    //   return quad.subject.value !== OWL.Ontology.value;
+    // });
 
     const termSubjects = [];
     terms.forEach((quad) => {

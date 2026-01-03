@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- No longer filters OWL:Ontology Subject when building 'subjectsOnly()'. Need
+  to re-examine why this was ever needed (see comment in code).
+
 ### Deprecation notice
 
 - In the next major version, support for Node 14 will be removed.
