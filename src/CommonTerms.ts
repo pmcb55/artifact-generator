@@ -1,0 +1,126 @@
+// We could use our generated Common vocabs here (and originally we
+// did!), but doing that creates a circular dependency since we need the
+// generator to generate that bundled vocab artifact in the first place!
+// So we just create the specific terms we need manually here instead
+// (which is fine, as these vocabs, and their terms, are all extremely stable!).
+//
+// Note: in general, it's bad practice to use simple string concatenation to
+// ever construct IRIs (due to potential normalization issues with double
+// '/' characters, or '..' appearing in paths, etc.). Instead we can use the
+// 'URL' class to construct our IRIs, such as this example for RDF.type:
+//   type: rdf.namedNode(new URL("type", RDF_NAMESPACE).href),
+// ..but this does result in less-readable code! So in the case of this
+// particular code we favour readability (since these vocab terms are so
+// stable).
+import rdf from "rdf-ext";
+
+export const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+export const RDF = {
+  type: rdf.namedNode(`${RDF_NAMESPACE}type`),
+  Property: rdf.namedNode(`${RDF_NAMESPACE}Property`),
+  List: rdf.namedNode(`${RDF_NAMESPACE}List`),
+  langString: rdf.namedNode(`${RDF_NAMESPACE}langString`),
+};
+
+export const RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
+export const RDFS = {
+  label: rdf.namedNode(`${RDFS_NAMESPACE}label`),
+  comment: rdf.namedNode(`${RDFS_NAMESPACE}comment`),
+  Resource: rdf.namedNode(`${RDFS_NAMESPACE}Resource`),
+  Class: rdf.namedNode(`${RDFS_NAMESPACE}Class`),
+  Datatype: rdf.namedNode(`${RDFS_NAMESPACE}Datatype`),
+  Literal: rdf.namedNode(`${RDFS_NAMESPACE}Literal`),
+  subClassOf: rdf.namedNode(`${RDFS_NAMESPACE}subClassOf`),
+  subPropertyOf: rdf.namedNode(`${RDFS_NAMESPACE}subPropertyOf`),
+  seeAlso: rdf.namedNode(`${RDFS_NAMESPACE}seeAlso`),
+  isDefinedBy: rdf.namedNode(`${RDFS_NAMESPACE}isDefinedBy`),
+};
+
+const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";
+export const DCTERMS = {
+  description: rdf.namedNode(`${DCTERMS_NAMESPACE}description`),
+  creator: rdf.namedNode(`${DCTERMS_NAMESPACE}creator`),
+  title: rdf.namedNode(`${DCTERMS_NAMESPACE}title`),
+};
+
+// For purely legacy reasons (specifically 'cos the core RDF and RDFS vocabs
+// use terms from this 'old' vocab to describe themselves)!
+const DCELEMENTS_NAMESPACE = "http://purl.org/dc/elements/1.1/";
+export const DCELEMENTS = {
+  title: rdf.namedNode(`${DCELEMENTS_NAMESPACE}title`),
+};
+
+const SKOS_NAMESPACE = "http://www.w3.org/2004/02/skos/core#";
+export const SKOS = {
+  Concept: rdf.namedNode(`${SKOS_NAMESPACE}Concept`),
+  prefLabel: rdf.namedNode(`${SKOS_NAMESPACE}prefLabel`),
+  definition: rdf.namedNode(`${SKOS_NAMESPACE}definition`),
+};
+
+const SKOSXL_NAMESPACE = "http://www.w3.org/2008/05/skos-xl#";
+export const SKOSXL = {
+  Label: rdf.namedNode(`${SKOSXL_NAMESPACE}Label`),
+  literalForm: rdf.namedNode(`${SKOSXL_NAMESPACE}literalForm`),
+  prefLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}prefLabel`),
+  altLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}altLabel`),
+  hiddenLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}hiddenLabel`),
+  labelRelation: rdf.namedNode(`${SKOSXL_NAMESPACE}labelRelation`),
+};
+
+export const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
+export const OWL = {
+  Ontology: rdf.namedNode(`${OWL_NAMESPACE}Ontology`),
+  Class: rdf.namedNode(`${OWL_NAMESPACE}Class`),
+  ObjectProperty: rdf.namedNode(`${OWL_NAMESPACE}ObjectProperty`),
+  NamedIndividual: rdf.namedNode(`${OWL_NAMESPACE}NamedIndividual`),
+  AnnotationProperty: rdf.namedNode(`${OWL_NAMESPACE}AnnotationProperty`),
+  DatatypeProperty: rdf.namedNode(`${OWL_NAMESPACE}DatatypeProperty`),
+};
+
+export const XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema#";
+export const XSD = {
+  string: rdf.namedNode(`${XSD_NAMESPACE}string`),
+};
+
+const VANN_NAMESPACE = "http://purl.org/vocab/vann/";
+export const VANN = {
+  preferredNamespacePrefix: rdf.namedNode(
+    `${VANN_NAMESPACE}preferredNamespacePrefix`,
+  ),
+  preferredNamespaceUri: rdf.namedNode(
+    `${VANN_NAMESPACE}preferredNamespaceUri`,
+  ),
+};
+
+const SHACL_NAMESPACE = "http://www.w3.org/ns/shacl#";
+export const SHACL = {
+  PrefixDeclaration: rdf.namedNode(`${SHACL_NAMESPACE}PrefixDeclaration`),
+  declare: rdf.namedNode(`${SHACL_NAMESPACE}declare`),
+  namespace: rdf.namedNode(`${SHACL_NAMESPACE}namespace`),
+  prefix: rdf.namedNode(`${SHACL_NAMESPACE}prefix`),
+};
+
+const SCHEMA_DOT_ORG_NAMESPACE = "https://schema.org/";
+export const SCHEMA_DOT_ORG = {
+  alternateName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}alternateName`),
+  givenName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}givenName`),
+  familyName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}familyName`),
+  Person: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}Person`),
+  PaymentStatusType: rdf.namedNode(
+    `${SCHEMA_DOT_ORG_NAMESPACE}PaymentStatusType`,
+  ),
+};
+
+const ARTIFACT_GENERATOR_NAMESPACE =
+  "https://inrupt.com/vocab/tool/artifact_generator/";
+export const ARTIFACT_GENERATOR = {
+  ConstantString: rdf.namedNode(
+    `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`,
+  ),
+  ConstantIri: rdf.namedNode(`${ARTIFACT_GENERATOR_NAMESPACE}ConstantIri`),
+};
+
+export const INRUPT_BEST_PRACTICE_NAMESPACE =
+  "https://w3id.org/inrupt/vocab/bestPractice/";
+export const INRUPT_BEST_PRACTICE = {};
+export const INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX = "inrupt_bp";
