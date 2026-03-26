@@ -72,7 +72,11 @@
     "eslint-plugin-prettier": "^5.5.1",
     "globals": "^17.0.0",
     "jest": "^30.0.4",
-    "prettier": "3.8.1"
+    "prettier": "3.8.1",
+    "ts-jest": "^29.4.6",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.2"
   },
   "jest": {
     "modulePathIgnorePatterns": [
