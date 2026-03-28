@@ -249,14 +249,6 @@ export function processCommandLine(
       )
       .default("quiet", false)
 
-      .alias("np", "noPrompt")
-      .boolean("noPrompt")
-      .describe(
-        "noPrompt",
-        "If set will not ask any interactive questions and will attempt to perform artifact generation automatically.",
-      )
-      .default("noPrompt", false)
-
       .alias("o", "outputDirectory")
       .describe(
         "outputDirectory",

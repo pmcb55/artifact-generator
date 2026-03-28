@@ -21,7 +21,6 @@ export interface AppArgv {
   outputDirectory: string;
   vocabListFile?: string;
   vocabListFileIgnore?: string;
-  noPrompt?: boolean;
   runNpmInstall?: boolean;
   // Populated at runtime for glob matching
   globMatchPosition?: number;
@@ -80,14 +79,7 @@ export class App {
 
     const targetPath = path.join(this.argv.outputDirectory, SAMPLE_CONFIG_NAME);
 
-    const configGen = new ConfigFileGenerator(this.argv);
-    if (this.argv.noPrompt) {
-      configGen.generateDefaultConfigFile(targetPath);
-    } else {
-      // By default, the user will be asked info about the artifacts to generate
-      await configGen.collectConfigInfo();
-      configGen.generateConfigFile(targetPath);
-    }
+    new ConfigFileGenerator(this.argv).generateDefaultConfigFile(targetPath);
     return targetPath;
   }
 
@@ -176,9 +168,7 @@ export class App {
         //  will need to be updated to always handle potentially multiple
         //  generation results...
         let result = undefined;
-        // The following loop enforces sequential execution on purpose, because
-        // there are possibilities that the generator requires user interaction,
-        // in which case parallel execution is not acceptable.
+        // The following loop enforces sequential execution on purpose.
         for (const configFile of matchingConfigFile) {
           const configDirectory = path.dirname(configFile);
 

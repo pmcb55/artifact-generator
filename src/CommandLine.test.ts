@@ -1,11 +1,6 @@
 import { jest } from "@jest/globals";
-import inquirer from "inquirer";
 import childProcess from "child_process";
 
-jest.mock("inquirer", () => ({
-  __esModule: true,
-  default: { prompt: jest.fn() },
-}));
 jest.mock("child_process", () => ({
   __esModule: true,
   default: { execSync: jest.fn() },
@@ -58,20 +53,6 @@ describe("Command Line unit tests", () => {
       expect(result.version).toBeUndefined();
     });
 
-    it("should publish artifact to the registry if user confirms yes", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmPublish: true }),
-      );
-
-      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
-
-      const result =
-        await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
-
-      expect(result.runNpmPublish).toBe(true);
-      expect(result.ranNpmPublish).toBe(true);
-    });
-
     it("should publish artifact to the registry if given explicit inputs", async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
@@ -84,23 +65,9 @@ describe("Command Line unit tests", () => {
       expect(result.ranNpmPublish).toBe(true);
     });
 
-    it("should not publish artifact to the registry if user confirms no", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmPublish: false }),
-      );
-
+    it("should not publish artifact if runNpmPublish flag is not set", async () => {
       const result =
         await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
-
-      expect(result.runNpmPublish).toBe(false);
-      expect(result.ranNpmPublish).toBeUndefined();
-    });
-
-    it("should not publish artifact if user did not specify publish, and also set no prompting", async () => {
-      const result = await CommandLine.askForArtifactToBeNpmPublished({
-        ...defaultInputs,
-        noPrompt: true,
-      });
 
       expect(result.ranNpmPublish).toBeUndefined();
     });
@@ -126,7 +93,7 @@ describe("Command Line unit tests", () => {
       expect(result.ranNpmInstall).toBe(true);
     });
 
-    it("should install artifact if user explicitly told to", async () => {
+    it("should install artifact if explicitly told to", async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
@@ -137,35 +104,9 @@ describe("Command Line unit tests", () => {
       expect(result.ranNpmInstall).toBe(true);
     });
 
-    it("should install artifact if user confirms yes", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmInstall: true }),
-      );
-
-      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
-
+    it("should not install artifact if runNpmInstall flag is not set", async () => {
       const result =
         await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
-
-      expect(result.ranNpmInstall).toBe(true);
-    });
-
-    it("should not install artifact if user confirms no", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmInstall: false }),
-      );
-
-      const result =
-        await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
-
-      expect(result.ranNpmInstall).toBeUndefined();
-    });
-
-    it("should not install artifact if user did not specify install, and also set no prompting", async () => {
-      const result = await CommandLine.askForArtifactToBeNpmInstalled({
-        ...defaultInputs,
-        noPrompt: true,
-      });
 
       expect(result.ranNpmInstall).toBeUndefined();
     });
@@ -298,38 +239,7 @@ describe("Command Line unit tests", () => {
       expect(result.ranWidoco).toBe(true);
     });
 
-    it("should generate documentation if user explicitly anwsers yes", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: true }),
-      );
-
-      const result = await CommandLine.askForArtifactToBeDocumented({
-        ...defaultInputs,
-        vocabList: [
-          { inputResources: ["https://example.com/Dummy_http_vocab"] },
-        ],
-        outputDirectory: "needs/a/parent/directory",
-      });
-
-      expect(result.ranWidoco).toBe(true);
-    });
-
-    it("should not generate documentation if user says not to", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: false }),
-      );
-
-      const result = await CommandLine.askForArtifactToBeDocumented({
-        ...defaultInputs,
-        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
-        outputDirectory: "needs/a/parent/directory",
-        runWidoco: false,
-      });
-
-      expect(result.ranWidoco).toBe(false);
-    });
-
-    it("should generate documentation (from HTTP vocab) if user explicitly told to", async () => {
+    it("should generate documentation (from HTTP vocab) if explicitly told to", async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
@@ -342,39 +252,12 @@ describe("Command Line unit tests", () => {
       expect(result.ranWidoco).toBe(true);
     });
 
-    it("should generate documentation if user confirms yes", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: true }),
-      );
-
+    it("should not generate documentation if runWidoco flag is not set", async () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
         vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
-        runWidoco: true,
-      });
-
-      expect(result.ranWidoco).toBe(true);
-    });
-
-    it("should not generate documentation if user confirms no", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: false }),
-      );
-
-      const result = await CommandLine.askForArtifactToBeDocumented({
-        ...defaultInputs,
-        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
-        outputDirectory: "needs/a/parent/directory",
-      });
-
-      expect(result.ranWidoco).toBe(false);
-    });
-
-    it("should not generate documentation if user did not specify, and also set no prompting", async () => {
-      const result = await CommandLine.askForArtifactToBeDocumented({
-        ...defaultInputs,
-        noPrompt: true,
+        runWidoco: false,
       });
 
       expect(result.ranWidoco).toBe(false);

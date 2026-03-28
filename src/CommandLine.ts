@@ -1,5 +1,4 @@
 import path from "path";
-import inquirer from "inquirer";
 import ChildProcess from "child_process";
 import debug from "debug";
 
@@ -57,94 +56,23 @@ export class CommandLine {
 
   static async askForArtifactToBeNpmInstalled(data) {
     if (data.runNpmInstall) {
-      return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
+      return { ...data, ...CommandLine.runNpmInstall(data) };
     }
-
-    let answer: {
-      runNpmInstall?: boolean;
-      ranNpmInstall?: boolean;
-      [key: string]: unknown;
-    } = {};
-    if (!data.noPrompt) {
-      const npmInstallQuestion = [
-        {
-          type: "confirm",
-          name: "runNpmInstall",
-          message: `Do you want to run NPM install for artifact [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
-          default: false,
-        },
-      ];
-
-      answer = await inquirer.prompt(npmInstallQuestion);
-
-      if (answer.runNpmInstall) {
-        answer = { ...answer, ...CommandLine.runNpmInstall(data) };
-      }
-    }
-
-    return { ...data, ...answer }; // Merge the answers in with the data and return
+    return data;
   }
 
   static async askForArtifactToBeNpmPublished(data) {
     if (data.runNpmPublish && data.npmRegistry) {
-      return { ...data, ...CommandLine.runNpmPublish(data) }; // Merge the answers in with the data and return
+      return { ...data, ...CommandLine.runNpmPublish(data) };
     }
-
-    let answer: { runNpmPublish?: boolean; [key: string]: unknown } = {};
-    if (!data.noPrompt && data.npmRegistry) {
-      const npmPublishQuestion = [
-        {
-          type: "confirm",
-          name: "runNpmPublish",
-          message: `Do you want to run NPM publish for artifact [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-          default: false,
-        },
-      ];
-
-      answer = await inquirer.prompt(npmPublishQuestion);
-
-      if (answer.runNpmPublish) {
-        answer = { ...answer, ...CommandLine.runNpmPublish(data) };
-      }
-    }
-
-    return { ...data, ...answer }; // Merge the answers in with the data and return
+    return data;
   }
 
   static async askForArtifactToBeDocumented(data) {
     if (data.runWidoco) {
-      // Merge the answers in with the data and return.
       return { ...data, ...CommandLine.runWidocoForAllVocabs(data) };
     }
-
-    let answer: {
-      runWidoco?: boolean;
-      ranWidoco?: boolean;
-      [key: string]: unknown;
-    } = {};
-    if (!data.noPrompt) {
-      const runWidocoQuestion = [
-        {
-          type: "confirm",
-          name: "runWidoco",
-          message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
-          default: false,
-        },
-      ];
-
-      answer = await inquirer.prompt(runWidocoQuestion);
-
-      if (answer.runWidoco) {
-        // Merge into our answer the result of attempting to generate documentation.
-        answer = CommandLine.runWidocoForAllVocabs({
-          ...data,
-          runWidoco: true,
-        });
-      }
-    }
-
-    // Assume we did NOT run the documentation, but overwrite that assumption if we did!
-    return { ranWidoco: false, ...data, ...answer }; // Merge the answers in with the data and return
+    return { ranWidoco: false, ...data };
   }
 
   static runNpmInstall(data) {
