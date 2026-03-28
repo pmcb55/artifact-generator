@@ -23,6 +23,7 @@ export const DEFAULT_CONFIG_TEMPLATE_PATH = path.join(
 );
 
 export class ConfigFileGenerator {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: any;
 
   constructor(initialConfig?) {

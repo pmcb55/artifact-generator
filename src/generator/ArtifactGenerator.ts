@@ -35,7 +35,9 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
 export const ARTIFACTS_INFO_FILENAME = ".artifacts-info.txt";
 
 export class ArtifactGenerator {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   configuration: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   artifactData: any;
 
   /**

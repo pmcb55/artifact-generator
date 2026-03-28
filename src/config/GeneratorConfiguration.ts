@@ -100,7 +100,9 @@ export const DEFAULT_CLI_ARTIFACT = [
 ];
 
 export class GeneratorConfiguration {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   configuration: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   modifiedResourceList: any;
 
   /**
@@ -489,6 +491,7 @@ export class GeneratorConfiguration {
    * @param {string} configFile path to the config file
    */
   static fromConfigFile(configFile: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let configuration: any = {};
     try {
       _debug(`\nProcessing configuration file [${configFile}]...`);
@@ -559,6 +562,7 @@ export class GeneratorConfiguration {
    * @returns {{}} a configuration instance built from the command-line args
    */
   static fromCommandLine(args) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cliConfig: any = {};
     GeneratorConfiguration.validateCommandline(args);
 
