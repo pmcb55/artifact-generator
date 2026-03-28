@@ -15,10 +15,8 @@ describe("Best practices report generator", () => {
 
   describe("should generate an empty report", () => {
     it("should generate empty report", () => {
-      const report = BestPracticeReportGenerator.buildComplianceReport(
-        emptyVocab,
-        {},
-      );
+      const report =
+        BestPracticeReportGenerator.buildComplianceReport(emptyVocab);
       expect(report.totalTermCount).toEqual(0);
     });
   });
