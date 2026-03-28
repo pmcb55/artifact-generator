@@ -44,7 +44,6 @@ const locallyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noPrompt: true,
         publish: ["local"],
       });
     },
@@ -59,7 +58,6 @@ const remotelyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noPrompt: true,
         publish: ["remote"],
       });
     },
@@ -74,7 +72,6 @@ const locallyAndRemotelyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noPrompt: true,
         publish: ["local", "remote"],
       });
     },
@@ -85,7 +82,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
 const nonPublishingGenerator = () => {
   return {
     generate: async () => {
-      return Promise.resolve({ stubbed: true, noPrompt: true });
+      return Promise.resolve({ stubbed: true });
     },
     runPublish: UNCALLED_PUBLISH_FUNCTION,
   };
@@ -104,9 +101,6 @@ const nonPublishingGenerator = () => {
 
 (ConfigFileGenerator as unknown as jest.Mock).mockImplementation(() => {
   return {
-    collectConfigInfo: async () => {
-      return Promise.resolve({});
-    },
     generateDefaultConfigFile: (targetPath: string) => {
       FileGenerator.createFileFromTemplate(
         DEFAULT_CONFIG_TEMPLATE_PATH,
@@ -145,11 +139,9 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -162,11 +154,9 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -183,7 +173,6 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
         publish: ["local"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -206,7 +195,6 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
         publish: ["remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -230,7 +218,6 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
         publish: ["local", "remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -250,7 +237,6 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -264,11 +250,9 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: true,
-        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -279,19 +263,7 @@ describe("App tests", () => {
         _: ["init"],
         outputDirectory: directoryPath,
         quiet: false,
-        noPrompt: true,
       };
-      await new App(argv).init();
-      expect(fs.existsSync(filePath)).toBe(true);
-      fs.unlinkSync(filePath);
-      fs.rmdirSync(directoryPath);
-    });
-
-    it("should generate a file through prompt", async () => {
-      const directoryPath = path.join(".", ".tmp");
-      const filePath = path.join(directoryPath, "sample-vocab.yml");
-      const argv = { _: ["init"], outputDirectory: directoryPath };
-      // init will call the prompt, which is mocked here
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);
       fs.unlinkSync(filePath);

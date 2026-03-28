@@ -1,5 +1,4 @@
 import "mock-local-storage";
-import { jest } from "@jest/globals";
 import path from "path";
 import fs from "fs";
 import packageDotJson from "../../package.json" with { type: "json" };
@@ -9,11 +8,6 @@ import {
   DEFAULT_CLI_ARTIFACT,
   CONFIG_SOURCE_COMMAND_LINE,
 } from "./GeneratorConfiguration.js";
-
-jest.mock("inquirer", () => ({
-  __esModule: true,
-  default: { prompt: jest.fn() },
-}));
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
@@ -166,10 +160,8 @@ describe("Generator configuration", () => {
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
         vocabListFile: "./test/resources/vocab/vocab-list-including-online.yml",
-        noPrompt: true,
       });
 
-      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(
         EXPECTED_VOCAB_LIST_FROM_YAML,
       );
@@ -180,7 +172,6 @@ describe("Generator configuration", () => {
         _: ["generate"],
         vocabListFile:
           "./test/resources/yamlConfig/vocab-list-version-mismatch.yml",
-        noPrompt: true,
       });
 
       // We expect the Artifact Generator version number in the generated
@@ -205,7 +196,6 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           vocabListFile: configPath,
-          noPrompt: true,
         },
         undefined,
       );
@@ -220,7 +210,6 @@ describe("Generator configuration", () => {
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
         vocabListFile: path.join(configPath, "vocab-list.yml"),
-        noPrompt: true,
       });
 
       const normalizedConfig = generatorConfiguration.configuration;
@@ -256,8 +245,6 @@ describe("Generator configuration", () => {
       expect(normalizedConfig.artifactToGenerate[1].sourceCodeTemplate).toEqual(
         path.join(configPath, "../anotherTemplateDirectory/javascript.hbs"),
       );
-
-      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
     });
   });
 
@@ -298,7 +285,6 @@ describe("Generator configuration", () => {
           new GeneratorConfiguration({
             _: ["generate"],
             vocabListFile: programmingLanguage,
-            noPrompt: true,
           }),
       ).toThrow("but neither was provided", programmingLanguage);
     });
@@ -312,7 +298,6 @@ describe("Generator configuration", () => {
           new GeneratorConfiguration({
             _: ["generate"],
             vocabListFile: packaging,
-            noPrompt: true,
           }),
       ).toThrow("but neither was provided", packaging);
     });
@@ -329,7 +314,6 @@ describe("Generator configuration", () => {
           new GeneratorConfiguration({
             _: ["generate"],
             vocabListFile: versioning,
-            noPrompt: true,
           }),
       ).toThrow("but neither was provided", versioning);
     });
@@ -384,10 +368,7 @@ describe("Generator configuration", () => {
         nameAndPrefixOverride: "dummy-test",
         namespaceIriOverride: argnamespaceIriOverride,
         ignoreNonVocabTerms: true,
-        noPrompt: true,
       });
-
-      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
 
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
@@ -412,7 +393,6 @@ describe("Generator configuration", () => {
         _: ["generate"],
         inputResources: [absolutePath],
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
       });
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
@@ -427,7 +407,6 @@ describe("Generator configuration", () => {
         _: ["generate"],
         inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         npmRegistry: "http://my.registry.ninja",
       });
 

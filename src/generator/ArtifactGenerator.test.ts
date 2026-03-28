@@ -1,16 +1,8 @@
 import "mock-local-storage";
-import { jest } from "@jest/globals";
 
 import fs from "fs";
 import path from "path";
 import { deleteSync } from "del";
-
-jest.mock("inquirer", () => ({
-  __esModule: true,
-  default: { prompt: jest.fn() },
-}));
-
-import inquirer from "inquirer";
 
 import { ArtifactGenerator } from "./ArtifactGenerator.js";
 import { GeneratorConfiguration } from "../config/GeneratorConfiguration.js";
@@ -20,20 +12,6 @@ import {
   DEFAULT_DIRECTORY_ROOT,
 } from "../Util.js";
 import { Resource } from "../Resource.js";
-
-const MOCKED_ARTIFACT_NAME = "testArtifact";
-const MOCKED_LIT_VOCAB_TERM_VERSION = "0.0.1";
-
-const MOCKED_USER_INPUT = {
-  artifactName: MOCKED_ARTIFACT_NAME,
-  solidCommonVocabVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
-};
-
-beforeEach(() => {
-  (inquirer.prompt as jest.Mock).mockImplementation(
-    jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT)),
-  );
-});
 
 describe("Artifact Generator unit tests", () => {
   it("should provide a default output directory", () => {
@@ -103,7 +81,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: "./test/resources/vocab/vocab-list.yml",
         outputDirectory,
-        noPrompt: true,
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -120,7 +97,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: "./test/resources/versioning/vocab-list.yml",
         outputDirectory,
-        noPrompt: true,
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -144,7 +120,6 @@ describe("Artifact Generator unit tests", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         supportBundling: false,
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
@@ -165,7 +140,7 @@ describe("Artifact Generator unit tests", () => {
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
 
-    it("should not ask for user input if no information is missing", async () => {
+    it("should use the artifact name and vocab version when provided", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
 
@@ -186,12 +161,6 @@ describe("Artifact Generator unit tests", () => {
       expect(artifactGenerator.artifactData.solidCommonVocabVersion).toEqual(
         "^1.4.0",
       );
-      expect(artifactGenerator.artifactData.artifactName).not.toEqual(
-        MOCKED_ARTIFACT_NAME,
-      );
-      expect(
-        artifactGenerator.artifactData.solidCommonVocabVersion,
-      ).not.toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
     it("should generate artifact with bundling", async () => {
@@ -214,7 +183,6 @@ describe("Artifact Generator unit tests", () => {
         rollupNodeResolveVersion: "^13.14.15",
 
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
       });
@@ -251,7 +219,6 @@ describe("Artifact Generator unit tests", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
       });
@@ -310,7 +277,6 @@ describe("Artifact Generator unit tests", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -396,7 +362,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -484,7 +449,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -593,7 +557,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -643,7 +606,6 @@ describe("Artifact Generator unit tests", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         force: true,
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
@@ -694,7 +656,6 @@ describe("Artifact Generator unit tests", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noPrompt: true,
         clearOutputDirectory: true,
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
@@ -717,7 +678,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
 
@@ -746,7 +706,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
 
@@ -789,7 +748,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -804,7 +762,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noPrompt: true,
       });
 
       const rerunArtifactGenerator = new ArtifactGenerator(rerunConfig);
@@ -823,7 +780,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-invalid-non-unpublish-command.yml",
         outputDirectory,
-        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
 
@@ -850,7 +806,6 @@ describe("Artifact Generator unit tests", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-unpublish-command.yml",
         outputDirectory,
-        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
 
@@ -872,7 +827,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: yamlFile,
         outputDirectory,
-        noPrompt: true,
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -895,7 +849,6 @@ describe("Artifact Generator unit tests", () => {
         _: "generate",
         vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
         outputDirectory,
-        noPrompt: true,
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
