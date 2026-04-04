@@ -1,7 +1,8 @@
 # Artifact Generator
 
-Generates source-code to greatly ease the use the terms defined in shared
-RDF vocabularies, by providing a constant for each term.
+Generates source-code to greatly ease the use the terms (i.e., the Classes,
+Properties, Named Individuals, etc.) defined in shared RDF vocabularies, by
+providing simple programming constants for each term.
 
 Each constant not only provides that term's IRI, but also provides accesors for
 all the term's metadata too (e.g., it's labels and comments (potentially in many
@@ -9,7 +10,7 @@ languages), 'see also' and 'is defined by' references, etc.).
 
 Code generated from mutiple vocabularies can easily be bundled and deployed as a
 single artifact in any programming language (e.g., npm Node.js modules for JavaScript
-or TypeScript, JARs for Java, assemblies for C#, etc.), which can then be be imported
+or TypeScript, JARs for Java, assemblies for C#, etc.), which can then be imported
 by developers directly into their projects.
 
 ## Quick start demo
